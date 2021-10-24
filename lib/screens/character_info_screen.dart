@@ -36,6 +36,7 @@ class _CharacterInfoScreenState extends State<CharacterInfoScreen> {
       appBar: AppBar(
         title: Text(_character.name.titleCase),
         backgroundColor: Colors.black,
+        centerTitle : true,
       ),
       body: Center(
         child: _showLoader 

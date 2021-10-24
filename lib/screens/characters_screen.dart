@@ -97,6 +97,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
       _character = response.result;
     });
   }
+  
 
   Widget _getContent() {
     return _character.length == 0
@@ -231,6 +232,23 @@ class _CharactersScreenState extends State<CharactersScreen> {
   }
 
   void _goCharacterInfo(Character character) async {
+
+  var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _showLoader = false;
+      });
+      await showAlertDialog(
+        context: context,
+        title: 'Error',
+        message: 'Verifica que estes conectado a internet.',
+        actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+        ]
+      );
+      return;
+    }
+    
     String? result = await Navigator.push(
       context,
       MaterialPageRoute(
