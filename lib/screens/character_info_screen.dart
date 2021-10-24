@@ -56,12 +56,11 @@ class _CharacterInfoScreenState extends State<CharacterInfoScreen> {
           Stack(
             children: <Widget>[
               ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
                       child: Image.network(
                         _character.img,
                         fit: BoxFit.cover,
-                        height: 80,
-                        width: 80,
+                        height: 200,
+                        width: 200,
                       ),
                     ),
             ],
@@ -79,7 +78,7 @@ class _CharacterInfoScreenState extends State<CharacterInfoScreen> {
                         Row(
                           children: <Widget>[
                             Text(
-                              'Genero: ', 
+                              'Género: ', 
                               style: TextStyle(
                                 fontWeight: FontWeight.bold
                               )
