@@ -3,6 +3,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
 
+import 'package:psychonauts_app/screens/character_info_screen.dart';
 import 'package:psychonauts_app/components/loader_component.dart';
 import 'package:psychonauts_app/helpers/api_helper.dart';
 import 'package:psychonauts_app/models/character.dart';
@@ -33,15 +34,16 @@ class _CharactersScreenState extends State<CharactersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Personajes'),
+        backgroundColor: Colors.black,
         centerTitle : true,
         actions: <Widget>[
           _isFiltered
           ? IconButton(
-              onPressed: _removeFilter, 
+              onPressed: _removeFilter,
               icon: Icon(Icons.filter_none)
             )
           : IconButton(
-              onPressed: _showFilter, 
+              onPressed: _showFilter,
               icon: Icon(Icons.filter_alt)
             )
         ],
@@ -64,12 +66,12 @@ class _CharactersScreenState extends State<CharactersScreen> {
       });
       await showAlertDialog(
         context: context,
-        title: 'Error', 
+        title: 'Error',
         message: 'Verifica que estes conectado a internet.',
         actions: <AlertDialogAction>[
             AlertDialogAction(key: null, label: 'Aceptar'),
         ]
-      );    
+      );
       return;
     }
 
@@ -82,12 +84,12 @@ class _CharactersScreenState extends State<CharactersScreen> {
     if (!response.isSuccess) {
       await showAlertDialog(
         context: context,
-        title: 'Error', 
+        title: 'Error',
         message: response.message,
         actions: <AlertDialogAction>[
             AlertDialogAction(key: null, label: 'Aceptar'),
         ]
-      );    
+      );
       return;
     }
 
@@ -97,7 +99,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
   }
 
   Widget _getContent() {
-    return _character.length == 0 
+    return _character.length == 0
       ? _noContent()
       : _getListView();
   }
@@ -126,12 +128,12 @@ class _CharactersScreenState extends State<CharactersScreen> {
         children: _character.map((e) {
           return Card(
             child: InkWell(
-              // onTap: () => _goEdit(e),
+               onTap: () => _goCharacterInfo(e),
               child: Container(
                 margin: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.white, 
+                  color: Colors.white,
                 ),
                 padding: EdgeInsets.all(5),
                 child: ListTile(
@@ -147,6 +149,10 @@ class _CharactersScreenState extends State<CharactersScreen> {
                     e.name.titleCase,
                     style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
                   ),
+                  trailing: IconButton(
+                  onPressed: () => _goCharacterInfo(e),
+                  icon: Icon(Icons.arrow_forward_ios_rounded, color: Colors.black54, size: 32),
+                  ),
                 ),
               ),
             ),
@@ -158,7 +164,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
 
   void _showFilter() {
     showDialog(
-      context: context, 
+      context: context,
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -185,11 +191,11 @@ class _CharactersScreenState extends State<CharactersScreen> {
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(context).pop(), 
+              onPressed: () => Navigator.of(context).pop(),
               child: Text('Cancelar')
             ),
             TextButton(
-              onPressed: () => _filter(), 
+              onPressed: () => _filter(),
               child: Text('Filtrar')
             ),
           ],
@@ -224,18 +230,18 @@ class _CharactersScreenState extends State<CharactersScreen> {
     Navigator.of(context).pop();
   }
 
-  // void _goEdit(Procedure procedure) async {
-  //   String? result = await Navigator.push(
-  //     context, 
-  //     MaterialPageRoute(
-  //       builder: (context) => ProcedureScreen(
-  //         token: widget.token, 
-  //         procedure: procedure,
-  //       )
-  //     )
-  //   );
-  //   if (result == 'yes') {
-  //     _getProcedures();
-  //   }
-  // }
+  void _goCharacterInfo(Character character) async {
+    String? result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CharacterInfoScreen(
+          character: character,
+        )
+      )
+    );
+
+    if (result == 'yes') {
+      _goCharacterInfo(character);
+    }
+  }
 }

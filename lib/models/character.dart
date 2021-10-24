@@ -7,6 +7,7 @@ class Character {
   String name = '';
   List<PsiPower> psiPowers = [];
   int iV = 0;
+  int powersCount = 0;
 
   Character({required this.gender, required this.img, required this.sId, required this.name, required this.psiPowers, required this.iV});
 
@@ -32,6 +33,7 @@ class Character {
     data['name'] = this.name;
     if (this.psiPowers != null) {
       data['psiPowers'] = this.psiPowers.map((v) => v.toJson()).toList();
+      powersCount = this.psiPowers.map((v) => v.toJson()).toList().length;
     }
     data['__v'] = this.iV;
     return data;
